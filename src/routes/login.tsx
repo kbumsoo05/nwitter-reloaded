@@ -63,7 +63,7 @@ export default function CreateAccount() {
                     value={loading ? "loading" : "login"}
                 />
                 {error == "" ? null : <Error>{error}</Error>}
-                <Switcher>don't have account? <Link to={"/createacount"}>create account&rarr;</Link></Switcher>
+                <Switcher>don't have account? <Link to={"/create-account"}>create account&rarr;</Link></Switcher>
             </Form>
         </Wrapper>
     )
