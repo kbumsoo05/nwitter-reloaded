@@ -4,6 +4,7 @@ import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { Error, Input, Logo, SubmitInput, Wrapper, Form, Switcher } from "../components/auth-components";
+import GithubBtn from "../components/github-btn";
 
 export default function CreateAccount() {
     const navigate = useNavigate();
@@ -26,7 +27,10 @@ export default function CreateAccount() {
         try {
             setError("");
             setLoading(true);
-            if (loading == true || email == "" || password == "") return;
+            if (loading == true || email == "" || password == "") {
+                setError("빈칸을 채워주세요");
+                return;
+            }
             const credentials = await signInWithEmailAndPassword(auth, email, password);
             console.log(credentials.user);
             navigate("/");
@@ -64,6 +68,8 @@ export default function CreateAccount() {
                 />
                 {error == "" ? null : <Error>{error}</Error>}
                 <Switcher>don't have account? <Link to={"/create-account"}>create account&rarr;</Link></Switcher>
+                <Switcher><Link to={"/create-account"}>reset password&rarr;</Link></Switcher>
+                <GithubBtn></GithubBtn>
             </Form>
         </Wrapper>
     )
