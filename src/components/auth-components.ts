@@ -67,3 +67,7 @@ export const Error = styled.span`
     color: tomato;
 `;
 
+export const Send = styled.span`
+    font-size: 14px;
+`;
+

@@ -1,24 +1,20 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../firebase";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
-import { Error, Input, Logo, SubmitInput, Wrapper, Form, Switcher } from "../components/auth-components";
-import GithubBtn from "../components/github-btn";
+import { Error, Input, Logo, SubmitInput, Wrapper, Form, Switcher, Send } from "../components/auth-components";
 
-export default function CreateAccount() {
-    const navigate = useNavigate();
+export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [inform, setInform] = useState(false);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { target: { name, value } } = e;
         if (name == "email") {
             setEmail(value)
-        } else if (name == "password") {
-            setPassword(value)
         }
     }
 
@@ -27,13 +23,12 @@ export default function CreateAccount() {
         try {
             setError("");
             setLoading(true);
-            if (loading == true || email == "" || password == "") {
+            if (loading == true || email == "") {
                 setError("빈칸을 채워주세요");
                 return;
             }
-            const credentials = await signInWithEmailAndPassword(auth, email, password);
-            console.log(credentials.user);
-            navigate("/");
+            await sendPasswordResetEmail(auth, email);
+            setInform(true);
         } catch (e) {
             if (e instanceof FirebaseError) {
                 console.log(e.message);
@@ -55,21 +50,20 @@ export default function CreateAccount() {
                     name="email"
                     placeholder="email"
                 />
-                <Input
-                    onChange={onChange}
-                    value={password}
-                    name="password"
-                    placeholder="password"
-                    type="password"
-                />
                 <SubmitInput
                     type="submit"
-                    value={loading ? "loading" : "login"}
+                    value={loading ? "loading" : "confirm"}
                 />
-                {error == "" ? null : <Error>{error}</Error>}
+                {error == "" ?
+                    inform ?
+                        <Send>check out email!</Send>
+                        :
+                        null
+                    :
+                    <Error>{error}</Error>
+                }
                 <Switcher>don't have account? <Link to={"/create-account"}>create account&rarr;</Link></Switcher>
-                <Switcher><Link to={"/reset-password"}>reset password&rarr;</Link></Switcher>
-                <GithubBtn></GithubBtn>
+                <Switcher><Link to={"/login"}>login &rarr;</Link></Switcher>
             </Form>
         </Wrapper>
     )

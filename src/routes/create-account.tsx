@@ -76,6 +76,7 @@ export default function CreateAccount() {
                 />
                 {error == "" ? null : <Error>{error}</Error>}
                 <Switcher>have account? <Link to={"/login"}>login &rarr;</Link></Switcher>
+                <Switcher><Link to={"/reset-password"}>reset password&rarr;</Link></Switcher>
             </Form>
         </Wrapper>
     )

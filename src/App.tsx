@@ -10,6 +10,7 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
+import ResetPassword from "./routes/reset-password";
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -53,7 +54,7 @@ function App() {
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="create-account" element={<CreateAccount />} />
-
+          <Route path="reset-password" element={<ResetPassword />} />
         </Routes>
       </HashRouter>
     </>
