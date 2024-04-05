@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { auth, db, storage } from "../firebase";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     width: 80%; /* 폼의 너비를 조정 */
@@ -79,29 +78,39 @@ export default function Upload() {
         }
     }
 
+
+
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         const user = auth.currentUser;
         console.log(user?.uid, file, twit);
-        if (user == null || file == null || twit == "" || twit.length > 180 || loading) return;
+        if (user == null || twit == "" || twit.length > 180 || loading) return;
 
         try {
             setLoading(true);
-            const doc = await addDoc(collection(db, "twits"), {
+            const docRef = await addDoc(collection(db, "twits"), {
                 userId: user.uid,
                 twit,
                 createAt: Date.now(),
                 userName: user.displayName || "anonymous",
-            })
-            const imageUrl = ref(storage, `twits/${user.uid}-${user.displayName}/${doc.id}`)
-            const result = await uploadBytes(imageUrl, file);
-            const url = await getDownloadURL(result.ref)
-            updateDoc(doc, {
-                imageUrl: url,
-            })
-        } catch (e) {
-            console.log(e);
+            });
 
+            console.log("Document added with ID:", docRef.id);
+
+            if (file !== null) {
+                const imageRef = ref(storage, `twits/${user.uid}-${user.displayName}/${docRef.id}`);
+                const uploadResult = await uploadBytes(imageRef, file);
+                const imageUrl = await getDownloadURL(uploadResult.ref);
+
+                await updateDoc(docRef, {
+                    imageUrl: imageUrl,
+                });
+
+                console.log("Image URL:", imageUrl);
+            }
+        } catch (e) {
+            console.error("Error uploading the twit:", e);
         } finally {
             setLoading(false);
         }

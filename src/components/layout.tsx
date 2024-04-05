@@ -14,17 +14,18 @@ const Wrapper = styled.div`
 `;
 
 const Menu = styled.div`
-
+padding: 20px;
 position: fixed;
-  height: 100vh; /* 높이 설정 */
-  width: ${menuWidth}vw; /* 가로 설정 */
-  display: flex; /* Flexbox 사용 */
-  flex-direction: column; /* 요소들을 세로로 나열 */
-  justify-content: flex-start; /* 시작 지점부터 요소를 정렬 */
-  align-items: center; /* 가로 방향으로 중앙 정렬 */
-  background-color: white; /* 배경색 설정 */
-  border-right: 1px solid #ccc; /* 오른쪽 테두리 설정 */
-  box-sizing: border-box; /* border 포함하여 width, height 계산 */
+  height: 100vh; 
+  width: ${menuWidth}vw; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: flex-start; 
+  gap: 10px;
+  background-color: white; 
+  border-right: 1px solid #ccc; 
+  box-sizing: border-box; 
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 `;
 
