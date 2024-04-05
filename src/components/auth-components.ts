@@ -22,6 +22,7 @@ export const Form = styled.form`
     gap: 15px;
     border: 2px solid #ccc;
     border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 
 `;
 

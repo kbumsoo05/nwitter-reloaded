@@ -11,6 +11,7 @@ import reset from "styled-reset";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
 import ResetPassword from "./routes/reset-password";
+import Upload from "./routes/upload";
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -39,19 +40,27 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            {/* Home과 Profile 라우트는 ProtectedRoute로 보호됩니다. */}
+
             <Route index element={
               <ProtectedRoute>
                 <Home />
               </ProtectedRoute>
             } />
+
             <Route path="profile" element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             } />
-            {/* Login과 CreateAccount 라우트는 보호되지 않습니다. */}
+
+            <Route path="upload" element={
+              <ProtectedRoute>
+                <Upload />
+              </ProtectedRoute>
+            } />
+
           </Route>
+
           <Route path="login" element={<Login />} />
           <Route path="create-account" element={<CreateAccount />} />
           <Route path="reset-password" element={<ResetPassword />} />

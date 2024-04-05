@@ -2,6 +2,7 @@ import { GithubAuthProvider, signInWithPopup } from "firebase/auth"
 import { auth } from "../firebase";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
 const Button = styled.button`
     display: flex; /* Flexbox 레이아웃 사용 */
     align-items: center; /* 세로 방향 중앙 정렬 */
@@ -31,6 +32,7 @@ export default function GithubBtn() {
         try {
             const provider = new GithubAuthProvider();
             await signInWithPopup(auth, provider);
+
             navigate("/");
         } catch (e) {
             console.log(e);
