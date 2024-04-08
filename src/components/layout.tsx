@@ -15,7 +15,6 @@ const Wrapper = styled.div`
 
 const Menu = styled.div`
 padding: 20px;
-position: fixed;
   height: 100vh; 
   width: ${menuWidth}vw; 
   display: flex;
@@ -29,11 +28,6 @@ position: fixed;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 `;
 
-const MenuGhost = styled.div`
-
-height: 100vh; /* 높이 설정 */
-  width: ${menuWidth}vw; /* 가로 설정 */
-`;
 
 const MenuItem = styled.div`
     width: 40px;
@@ -75,7 +69,6 @@ export default function Layout() {
                     </svg>
                 </MenuItem>
             </Menu>
-            <MenuGhost></MenuGhost>
             <OutletWrapper>
 
                 <Outlet />

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { db } from "../firebase";
 import Twit from "./twit";
 import { Unsubscribe } from "firebase/auth";
+import styled from "styled-components";
 
 export interface ITwit {
     createAt: number,
@@ -12,6 +13,13 @@ export interface ITwit {
     userName: string,
     id: string,
 }
+
+const Wrapper = styled.div`
+display: flex;
+flex-direction: column;
+overflow-y: scroll;
+height: 100vh;
+`;
 
 export default function TImelime() {
     const [twits, setTwits] = useState<ITwit[]>([]);
@@ -52,10 +60,10 @@ export default function TImelime() {
 
 
     return (
-        <div>
+        <Wrapper>
             {twits.map((twit) =>
                 <Twit key={twit.id} {...twit} />
             )}
-        </div>
+        </Wrapper>
     )
 }
