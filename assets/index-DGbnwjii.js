@@ -3416,6 +3416,7 @@ padding: 20px;
 `,vv=W.div`
   height: 27px;
   width:  27px;
+  color: tomato;
 `,M2=W.div`
   display: flex; 
   width: 100%;
