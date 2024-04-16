@@ -94,6 +94,7 @@ export default function Upload() {
                 twit,
                 createAt: Date.now(),
                 userName: user.displayName || "anonymous",
+                likeMembers: [],
             });
 
             console.log("Document added with ID:", docRef.id);

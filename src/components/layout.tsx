@@ -28,10 +28,35 @@ padding: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 `;
 
+const MenuLine = styled.div`
+display: flex;  
+gap: 10px;
+justify-content: center;
+align-items: center;   
+
+`;
+
+const StyledLink = styled(Link)`
+    display: flex;
+    text-decoration: none; // 밑줄 제거
+    font-size: 17px;
+    font-weight: 600;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #294f6a;
+    border-radius: 8px;
+    padding: 2px;
+    width: 90%;
+    &:hover {
+        background-color: #f0f0f0;
+    }
+`;
+
+const MenuSpan = styled.span`
+`;
 
 const MenuItem = styled.div`
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
 `;
 
 const OutletWrapper = styled.div`
@@ -49,20 +74,27 @@ export default function Layout() {
     return (
         <Wrapper>
             <Menu>
-                <Link to={"/"}>
-                    <MenuItem>
-                        <svg data-slot="icon" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
-                        </svg>
-                    </MenuItem>
-                </Link>
-                <Link to={"/profile"}>
-                    <MenuItem>
-                        <svg data-slot="icon" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </MenuItem>
-                </Link>
+                <StyledLink to={"/"}>
+
+                    <MenuLine>
+                        <MenuItem>
+                            <svg data-slot="icon" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M8.543 2.232a.75.75 0 0 0-1.085 0l-5.25 5.5A.75.75 0 0 0 2.75 9H4v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V9h1.25a.75.75 0 0 0 .543-1.268l-5.25-5.5Z" />
+                            </svg>
+                        </MenuItem>
+                        <MenuSpan>home</MenuSpan>
+                    </MenuLine>
+                </StyledLink>
+                <StyledLink to={"/profile"}>
+                    <MenuLine>
+                        <MenuItem>
+                            <svg data-slot="icon" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clipRule="evenodd" fillRule="evenodd" d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0Zm-5-2a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM8 9c-1.825 0-3.422.977-4.295 2.437A5.49 5.49 0 0 0 8 13.5a5.49 5.49 0 0 0 4.294-2.063A4.997 4.997 0 0 0 8 9Z" />
+                            </svg>
+                        </MenuItem>
+                        <MenuSpan>profile</MenuSpan>
+                    </MenuLine>
+                </StyledLink>
                 <MenuItem onClick={onLogout}>
                     <svg data-slot="icon" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"></path>

@@ -1,26 +1,26 @@
 import { styled } from "styled-components";
 import { ITwit } from "./timeline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db, storage } from "../firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import { update } from "firebase/database";
 
 const Wrapper = styled.div`
-  background-color: white; 
-  border: 3px solid #d3d3d3; 
-  width: 70%; 
+width: 30vw;
   margin: auto; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-top: 40px;
+  border-bottom: 1px solid #ccc;
 `;
 
 const EditDele = styled.div`
   height: 27px;
   width:  27px;
+  color: #2a526f;
 `;
 
 const Column = styled.div`
@@ -33,12 +33,11 @@ const Column = styled.div`
 `;
 
 const GoLeft = styled.div`
-  width: 95%;
+  width: 100%;
 `
 
 const Photo = styled.img`
-  width: 280px; 
-  height: 250px; 
+  width: 30vw; 
   object-fit: cover;
   border-radius: 8px; 
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
@@ -47,16 +46,11 @@ const Photo = styled.img`
 const ComentLike = styled.div`
   width: 100%;
   height: 75px;
-  border-top: 3px solid gray;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const Coment = styled.div`
-  display: flex;
-  padding-left: 14px;
-`;
 
 const Like = styled.div`
   display: flex;
@@ -79,25 +73,17 @@ const Username = styled.span`
   gap: 10px;
 `;
 
-const NameComent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-left: 15px;
-`;
-
-const UserName = styled.span``;
-
-const UserComent = styled.p``;
-
 const Payload = styled.p`
   color: #666; 
+  font-size: 15px;
+  font-weight: 700;
 `;
 
 const LikedNum = styled.span``;
 
 const LikeLogo = styled.div`
-height: 35px;
-width: 35px;
+height: 30px;
+width: 30px;
 transition: transform 0.2s ease-in-out, background-color 0.2s;
   &:hover {
     transform: scale(1.2);
@@ -106,10 +92,56 @@ transition: transform 0.2s ease-in-out, background-color 0.2s;
 
 export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
   const [liked, setLiked] = useState(false);
+  const [likeMembers, setLikeMembers] = useState([""]);
+  const [likeNum, setLikeNum] = useState(0);
   const user = auth.currentUser;
+  const navigate = useNavigate();
+  const docRef = doc(db, "twits", id);
+
   //await getDownloadURL(ref(storage,"profille-image/base-profile-img"));
-  const onLikeClick = () => {
+
+  useEffect(() => {
+    getLikeMembers();
+  }, []);
+
+  const getLikeMembers = async () => {
+
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setLikeMembers(docSnap.data()?.likeMembers);
+      setLikeNum(docSnap.data()?.likeMembers.length);
+      if (docSnap.data()?.likeMembers.includes(user?.uid)) {
+        setLiked(true);
+      }
+    }
+  };
+
+  const onLikeClick = async () => {
     setLiked((prev) => !prev)
+    if (liked) {
+
+      setLikeNum((prev) => prev - 1);
+      if (user?.uid) {
+        likeMembers.splice(likeMembers.indexOf(user?.uid), 1);
+      }
+
+    } else {
+
+      setLikeNum((prev) => prev + 1);
+      if (user?.uid) {
+        likeMembers.push(user?.uid);
+      }
+
+    }
+
+    await updateDoc(docRef, {
+      likeMembers: likeMembers,
+    });
+
+  }
+
+  const onEdit = () => {
+    navigate('/edittwit', { state: id })
   }
 
   const onDelete = async () => {
@@ -141,7 +173,7 @@ export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
             <UserProfile src="/base-profile-img.jpg" />
             {userName}
             {user?.uid == userId ?
-              <EditDele>
+              <EditDele onClick={onEdit}>
                 <svg data-slot="icon" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                 </svg>
@@ -155,7 +187,6 @@ export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
               </EditDele>
               : null}
           </Username>
-
         </GoLeft>
         {imageUrl ? (
           <Photo src={imageUrl} />
@@ -165,15 +196,9 @@ export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
         </GoLeft>
       </Column>
       <ComentLike>
-        <Coment>
-          <UserProfile src="/base-profile-img.jpg" alt="example" />
-          <NameComent>
-            <UserName>{userName}</UserName>
-            <UserComent>coment 미완성  </UserComent>
-          </NameComent>
-        </Coment>
+        <span>댓글보기</span>
         <Like>
-          <LikedNum>12미완성</LikedNum>
+          <LikedNum>{likeNum}</LikedNum>
           {liked ?
             <LikeLogo onClick={onLikeClick}>
               <svg data-slot="icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

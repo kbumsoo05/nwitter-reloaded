@@ -34,7 +34,7 @@ export default function CreateAccount() {
             if (loading == true || name == "" || email == "" || password == "") return;
             const credentials = await createUserWithEmailAndPassword(auth, email, password);
             console.log(credentials.user);
-            await updateProfile(credentials.user, { displayName: name })
+            await updateProfile(credentials.user, { displayName: name });
             navigate("/");
         } catch (e) {
             if (e instanceof FirebaseError) {
