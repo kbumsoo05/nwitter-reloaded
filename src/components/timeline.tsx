@@ -1,9 +1,9 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react"
 import { db } from "../firebase";
-import Twit from "./twit";
 import { Unsubscribe } from "firebase/auth";
 import styled from "styled-components";
+import Tweet from "./twit";
 
 export interface ITwit {
     createAt: number,
@@ -37,7 +37,7 @@ export default function TImelime() {
             //     return { createAt, imageUrl, twit, userId, userName, id: doc.id };
             // })
 
-            unsubscribe = await onSnapshot(twitsQuery, (snapshot) => {
+            unsubscribe = onSnapshot(twitsQuery, (snapshot) => {
                 const twits = snapshot.docs.map((doc) => {
                     const { createAt, imageUrl, twit, userId, userName } = doc.data();
                     return {
@@ -62,7 +62,7 @@ export default function TImelime() {
     return (
         <Wrapper>
             {twits.map((twit) =>
-                <Twit key={twit.id} {...twit} />
+                <Tweet key={twit.id} {...twit} />
             )}
         </Wrapper>
     )

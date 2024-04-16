@@ -12,6 +12,7 @@ import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
 import ResetPassword from "./routes/reset-password";
 import Upload from "./routes/upload";
+import EditTwit from "./routes/edit-twit";
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -56,6 +57,12 @@ function App() {
             <Route path="upload" element={
               <ProtectedRoute>
                 <Upload />
+              </ProtectedRoute>
+            } />
+
+            <Route path="edittwit" element={
+              <ProtectedRoute>
+                <EditTwit />
               </ProtectedRoute>
             } />
 
