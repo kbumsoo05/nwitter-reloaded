@@ -5,7 +5,7 @@ import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import { update } from "firebase/database";
+import PopupTwit from "./popupTwit";
 
 const Wrapper = styled.div`
 width: 30vw;
@@ -39,8 +39,8 @@ const GoLeft = styled.div`
 const Photo = styled.img`
   width: 30vw; 
   object-fit: cover;
-  border-radius: 8px; 
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 3px; 
+  border: 1px solid #ccc;
 `;
 
 const ComentLike = styled.div`
@@ -81,7 +81,7 @@ const Payload = styled.p`
 
 const LikedNum = styled.span``;
 
-const LikeLogo = styled.div`
+export const LikeLogo = styled.div`
 height: 30px;
 width: 30px;
 transition: transform 0.2s ease-in-out, background-color 0.2s;
@@ -90,7 +90,7 @@ transition: transform 0.2s ease-in-out, background-color 0.2s;
   }
 `;
 
-export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
+export default function Tweet({ createAt, userName, imageUrl, twit, userId, id }: ITwit) {
   const [liked, setLiked] = useState(false);
   const [likeMembers, setLikeMembers] = useState([""]);
   const [likeNum, setLikeNum] = useState(0);
@@ -196,7 +196,7 @@ export default function Tweet({ userName, imageUrl, twit, userId, id }: ITwit) {
         </GoLeft>
       </Column>
       <ComentLike>
-        <span>댓글보기</span>
+        <PopupTwit createAt={createAt} imageUrl={imageUrl} twit={twit} userId={userId} id={id} userName={userName} />
         <Like>
           <LikedNum>{likeNum}</LikedNum>
           {liked ?
